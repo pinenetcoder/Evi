@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Скоро мне 6!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: 'Baloo 2', cursive, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #ff6fb7 0%, #c084fc 40%, #a855f7 70%, #7c3aed 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ===== SPARKLES ON BACKGROUND ===== */
+.sparkle {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+  pointer-events: none;
+  animation: sparkle-twinkle var(--dur) ease-in-out infinite;
+  opacity: 0;
+  z-index: 0;
+}
+
+@keyframes sparkle-twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ===== BALLOONS ===== */
+.balloon {
+  position: fixed;
+  bottom: -160px;
+  width: var(--size);
+  height: calc(var(--size) * 1.2);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  opacity: 0.85;
+  z-index: 1;
+  animation: balloon-rise var(--rise-dur) var(--delay) ease-in infinite;
+  pointer-events: none;
+}
+
+.balloon::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 40px;
+  background: rgba(255,255,255,0.5);
+}
+
+@keyframes balloon-rise {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.85;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(calc(-100vh - 300px)) translateX(var(--sway)) rotate(var(--rot));
+    opacity: 0;
+  }
+}
+
+/* ===== CONFETTI ===== */
+.confetti {
+  position: fixed;
+  top: -20px;
+  width: var(--w);
+  height: var(--h);
+  opacity: 0.9;
+  z-index: 1;
+  pointer-events: none;
+  animation: confetti-fall var(--fall-dur) var(--delay) linear infinite;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 0;
+  }
+  5% { opacity: 0.9; }
+  100% {
+    transform: translateY(calc(100vh + 40px)) rotate(var(--spin)) scale(0.6);
+    opacity: 0;
+  }
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 20px;
+}
+
+.title {
+  font-size: clamp(1.6rem, 5vw, 2.8rem);
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(124, 58, 237, 0.5), 0 0 40px rgba(255, 111, 183, 0.3);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+/* ===== BIG NUMBER 6 ===== */
+.big-six-wrapper {
+  position: relative;
+  display: inline-block;
+  margin: 10px 0 6px;
+}
+
+.big-six {
+  font-size: clamp(140px, 30vw, 280px);
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, #fff 0%, #ffd6ec 30%, #f0abfc 60%, #e879f9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 30px rgba(232, 121, 249, 0.6)) drop-shadow(0 4px 20px rgba(168, 85, 247, 0.4));
+  animation: six-pulse 2.5s ease-in-out infinite;
+  position: relative;
+}
+
+@keyframes six-pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 30px rgba(232, 121, 249, 0.6)) drop-shadow(0 4px 20px rgba(168, 85, 247, 0.4));
+  }
+  50% {
+    transform: scale(1.06);
+    filter: drop-shadow(0 0 50px rgba(232, 121, 249, 0.9)) drop-shadow(0 4px 30px rgba(168, 85, 247, 0.6));
+  }
+}
+
+/* sparkle ring around the 6 */
+.six-sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  animation: orbit-sparkle var(--orbit-dur) linear infinite;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes orbit-sparkle {
+  0% { opacity: 0; transform: rotate(0deg) translateX(var(--orbit-r)) scale(0.5); }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: rotate(360deg) translateX(var(--orbit-r)) scale(1.2); }
+}
+
+.subtitle {
+  font-size: clamp(1.1rem, 3vw, 1.8rem);
+  font-weight: 700;
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 1px 8px rgba(124, 58, 237, 0.4);
+  margin-bottom: 30px;
+}
+
+/* ===== COUNTDOWN TIMER ===== */
+.countdown {
+  display: flex;
+  gap: clamp(8px, 2vw, 18px);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.countdown-card {
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 18px;
+  width: clamp(72px, 16vw, 120px);
+  height: clamp(80px, 16vw, 120px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.2), inset 0 1px 0 rgba(255,255,255,0.3);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.countdown-card:hover {
+  transform: translateY(-4px) scale(1.04);
+}
+
+.countdown-value {
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(124, 58, 237, 0.5);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-label {
+  font-size: clamp(0.65rem, 1.5vw, 0.95rem);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+/* ===== BIRTHDAY MESSAGE (hidden until day) ===== */
+.birthday-message {
+  display: none;
+  text-align: center;
+  animation: birthday-appear 1s ease-out forwards;
+}
+
+.birthday-message h1 {
+  font-size: clamp(2rem, 7vw, 4.5rem);
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 0 40px rgba(255, 111, 183, 0.8), 0 0 80px rgba(168, 85, 247, 0.5);
+  animation: birthday-bounce 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes birthday-appear {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes birthday-bounce {
+  from { transform: translateY(0) scale(1); }
+  to { transform: translateY(-12px) scale(1.05); }
+}
+
+/* ===== EXTRA CONFETTI BURST (for birthday) ===== */
+.confetti-burst .confetti {
+  animation-duration: 2s !important;
+  animation-delay: 0s !important;
+}
+
+/* ===== DECORATIVE STARS ===== */
+.deco-star {
+  position: fixed;
+  font-size: var(--star-size);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+  animation: star-float var(--float-dur) ease-in-out infinite alternate;
+}
+
+@keyframes star-float {
+  from { transform: translateY(0) rotate(0deg); }
+  to { transform: translateY(-20px) rotate(15deg); }
+}
+</style>
+</head>
+<body>
+
+<div class="main-content">
+  <div class="title">Скоро мне исполнится</div>
+
+  <div class="big-six-wrapper">
+    <div class="big-six">6</div>
+  </div>
+
+  <div class="subtitle">День рождения 8 мая 🎂</div>
+
+  <div class="countdown" id="countdown">
+    <div class="countdown-card">
+      <div class="countdown-value" id="days">--</div>
+      <div class="countdown-label">дней</div>
+    </div>
+    <div class="countdown-card">
+      <div class="countdown-value" id="hours">--</div>
+      <div class="countdown-label">часов</div>
+    </div>
+    <div class="countdown-card">
+      <div class="countdown-value" id="minutes">--</div>
+      <div class="countdown-label">минут</div>
+    </div>
+    <div class="countdown-card">
+      <div class="countdown-value" id="seconds">--</div>
+      <div class="countdown-label">секунд</div>
+    </div>
+  </div>
+
+  <div class="birthday-message" id="birthdayMsg">
+    <h1>🎉 С Днём Рождения! 🎉</h1>
+    <div class="subtitle" style="margin-top:20px;">Мне 6 лет! 🥳🎈🎂</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const BIRTHDAY = new Date('2026-05-08T07:00:00');
+
+  const daysEl = document.getElementById('days');
+  const hoursEl = document.getElementById('hours');
+  const minutesEl = document.getElementById('minutes');
+  const secondsEl = document.getElementById('seconds');
+  const countdownEl = document.getElementById('countdown');
+  const birthdayMsg = document.getElementById('birthdayMsg');
+
+  function pad(n, len) {
+    return String(n).padStart(len, '0');
+  }
+
+  function updateCountdown() {
+    const now = Date.now();
+    const diff = BIRTHDAY.getTime() - now;
+
+    if (diff <= 0) {
+      countdownEl.style.display = 'none';
+      birthdayMsg.style.display = 'block';
+      document.body.classList.add('confetti-burst');
+      return;
+    }
+
+    const totalMs = diff;
+    const days = Math.floor(totalMs / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((totalMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((totalMs % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((totalMs % (1000 * 60)) / 1000);
+    daysEl.textContent = days;
+    hoursEl.textContent = pad(hours, 2);
+    minutesEl.textContent = pad(minutes, 2);
+    secondsEl.textContent = pad(seconds, 2);
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  /* ===== Generate balloons ===== */
+  const balloonColors = [
+    '#ff6fb7', '#f0abfc', '#e879f9', '#c084fc',
+    '#a855f7', '#7c3aed', '#ff8fcb', '#d946ef',
+    '#fbbf24', '#f472b6', '#fb7185'
+  ];
+
+  for (let i = 0; i < 14; i++) {
+    const b = document.createElement('div');
+    b.className = 'balloon';
+    const size = 40 + Math.random() * 50;
+    b.style.setProperty('--size', size + 'px');
+    b.style.setProperty('--rise-dur', (10 + Math.random() * 12) + 's');
+    b.style.setProperty('--delay', (Math.random() * 14) + 's');
+    b.style.setProperty('--sway', (Math.random() * 80 - 40) + 'px');
+    b.style.setProperty('--rot', (Math.random() * 30 - 15) + 'deg');
+    b.style.left = (Math.random() * 100) + 'vw';
+    b.style.background = `radial-gradient(circle at 35% 25%, rgba(255,255,255,0.4), ${balloonColors[i % balloonColors.length]} 60%)`;
+    document.body.appendChild(b);
+  }
+
+  /* ===== Generate confetti ===== */
+  const confettiColors = [
+    '#ff6fb7', '#fbbf24', '#e879f9', '#fff',
+    '#c084fc', '#f472b6', '#a855f7', '#34d399',
+    '#60a5fa', '#f0abfc', '#fb923c'
+  ];
+
+  const confettiShapes = ['50%', '2px', '0'];
+
+  for (let i = 0; i < 35; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    const w = 5 + Math.random() * 8;
+    const h = 5 + Math.random() * 12;
+    c.style.setProperty('--w', w + 'px');
+    c.style.setProperty('--h', h + 'px');
+    c.style.setProperty('--fall-dur', (6 + Math.random() * 10) + 's');
+    c.style.setProperty('--delay', (Math.random() * 12) + 's');
+    c.style.setProperty('--spin', (Math.random() * 720 - 360) + 'deg');
+    c.style.left = (Math.random() * 100) + 'vw';
+    c.style.background = confettiColors[i % confettiColors.length];
+    c.style.borderRadius = confettiShapes[Math.floor(Math.random() * confettiShapes.length)];
+    document.body.appendChild(c);
+  }
+
+  /* ===== Generate sparkles ===== */
+  for (let i = 0; i < 30; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    s.style.left = (Math.random() * 100) + 'vw';
+    s.style.top = (Math.random() * 100) + 'vh';
+    s.style.setProperty('--dur', (1.5 + Math.random() * 3) + 's');
+    s.style.animationDelay = (Math.random() * 4) + 's';
+    s.style.width = s.style.height = (3 + Math.random() * 5) + 'px';
+    document.body.appendChild(s);
+  }
+
+  /* ===== Sparkles orbiting the 6 ===== */
+  const sixWrapper = document.querySelector('.big-six-wrapper');
+  for (let i = 0; i < 6; i++) {
+    const sp = document.createElement('div');
+    sp.className = 'six-sparkle';
+    sp.style.setProperty('--orbit-dur', (3 + Math.random() * 3) + 's');
+    sp.style.setProperty('--orbit-r', (60 + Math.random() * 60) + 'px');
+    sp.style.animationDelay = (i * 0.8) + 's';
+    sp.style.top = '50%';
+    sp.style.left = '50%';
+    sixWrapper.appendChild(sp);
+  }
+
+  /* ===== Decorative stars ===== */
+  const starChars = ['✦', '✧', '⭐', '★', '✨'];
+  for (let i = 0; i < 12; i++) {
+    const star = document.createElement('div');
+    star.className = 'deco-star';
+    star.textContent = starChars[i % starChars.length];
+    star.style.left = (Math.random() * 100) + 'vw';
+    star.style.top = (Math.random() * 100) + 'vh';
+    star.style.setProperty('--star-size', (14 + Math.random() * 30) + 'px');
+    star.style.setProperty('--float-dur', (3 + Math.random() * 4) + 's');
+    star.style.animationDelay = (Math.random() * 3) + 's';
+    document.body.appendChild(star);
+  }
+})();
+</script>
+</body>
+</html>
